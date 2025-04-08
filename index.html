@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>蜂巢互動慶祝頁面</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", "Noto Sans TC", sans-serif;
+      background: linear-gradient(to bottom, #fffce1, #fff176, #ffe600);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      transition: opacity 1s ease;
+    }
+
+    .fade-out {
+      opacity: 0;
+    }
+
+    .container {
+      width: 300px;
+      height: 90vh;
+      background: #fffef0;
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 1.4rem;
+      color: #222;
+      margin-top: 0.5rem;
+    }
+
+    .emoji-bee {
+      position: absolute;
+      font-size: 1.8rem;
+      animation: beeFloat 6s ease-in-out infinite;
+      opacity: 0.9;
+    }
+
+    .emoji-bee:nth-child(1) { top: 10%; left: 10px; animation-delay: 0s; }
+    .emoji-bee:nth-child(2) { top: 20%; right: 10px; animation-delay: 1s; }
+    .emoji-bee:nth-child(3) { bottom: 20%; left: 15px; animation-delay: 2s; }
+    .emoji-bee:nth-child(4) { bottom: 10%; right: 15px; animation-delay: 3s; }
+
+    @keyframes beeFloat {
+      0% { transform: translate(0, 0); }
+      50% { transform: translateY(-15px); }
+      100% { transform: translate(0, 0); }
+    }
+
+    .hive-icon {
+      width: 120px;
+      height: 220px;
+      border-radius: 0 0 60px 60px;
+      background: linear-gradient(to top, #fbc02d, #fff176);
+      border: 5px solid #000;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 30px 12px rgba(255, 215, 0, 0.4);
+      transition: box-shadow 0.5s ease;
+    }
+
+    .hive-icon.glow {
+      animation: glowPulse 2s infinite;
+    }
+
+    @keyframes glowPulse {
+      0% { box-shadow: 0 0 30px 15px rgba(255, 223, 0, 0.6); }
+      50% { box-shadow: 0 0 40px 20px rgba(255, 223, 0, 0.9); }
+      100% { box-shadow: 0 0 30px 15px rgba(255, 223, 0, 0.6); }
+    }
+
+    .honey-fill {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background-color: #fdd835;
+      height: 20%;
+      transition: height 0.5s ease-in-out;
+    }
+
+    .honey-drip {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 10px;
+      height: 10px;
+      background-color: #fbc02d;
+      border-radius: 50%;
+      animation: drip 1s ease-in-out forwards;
+      z-index: 5;
+    }
+
+    @keyframes drip {
+      0% { transform: translate(-50%, 0) scale(1); opacity: 1; }
+      50% { transform: translate(-50%, 50px) scale(1.2); opacity: 0.9; }
+      100% { transform: translate(-50%, 100px) scale(0.8); opacity: 0; }
+    }
+
+    .count-display {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #000;
+      margin: 1rem 0 0.5rem;
+      z-index: 5;
+      transition: transform 0.2s ease;
+    }
+
+    .count-display.bounce {
+      transform: scale(1.3);
+    }
+
+    .pollen {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: rise 1.5s ease-out forwards;
+      z-index: 2;
+    }
+
+    @keyframes rise {
+      0% { transform: translateY(0); opacity: 0.8; }
+      100% { transform: translateY(-100px); opacity: 0; }
+    }
+
+    .reward-area {
+      position: relative;
+      width: 100%;
+      height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .celebration {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #d32f2f;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 12px;
+      display: none;
+      z-index: 10;
+    }
+
+    .bonus-display {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 1rem;
+      background: rgba(255, 255, 255, 0.6);
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      box-shadow: 0 0 8px rgba(255, 215, 0, 0.8);
+    }
+
+    .reward-toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ffec3d;
+      padding: 1rem 1.5rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      color: #222;
+      font-size: 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+      z-index: 100;
+    }
+
+    .reward-toast img {
+      height: 48px;
+      margin-left: 1rem;
+    }
+
+    .reward-toast.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+  </style>
+</head>
+<body>
+  <div class="emoji-bee">🐝</div>
+  <div class="emoji-bee">✨</div>
+  <div class="emoji-bee">🐝</div>
+  <div class="emoji-bee">✨</div>
+
+  <div class="container" onclick="addHoney()">
+    <h1>HIVE A NICE DAY</h1>
+    <div class="count-display" id="honeyCount">0</div>
+    <div class="hive-icon" id="hive">
+      <div class="honey-fill" id="honeyFill"></div>
+    </div>
+    <div class="reward-area">
+      <div class="celebration" id="celebration">🎉 完成新蜂巢！</div>
+    </div>
+  </div>
+
+  <div class="bonus-display" id="bonusDisplay">🐝 花粉值：0</div>
+  <div class="reward-toast" id="rewardToast">
+    簽到成功！你獲得 +200 花粉值
+    <img src="https://cdn-icons-png.flaticon.com/512/3089/3089805.png" alt="bee" />
+  </div>
+
+  <audio id="buzzSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_47e7f56482.mp3"></audio>
+  <audio id="coinSound" src="https://cdn.pixabay.com/audio/2022/03/24/audio_3d479e3c0a.mp3"></audio>
+  <audio id="clapSound" src="https://cdn.pixabay.com/audio/2021/08/04/audio_6d0e3cb5e2.mp3"></audio>
+  <audio id="dripSound" src="https://cdn.pixabay.com/audio/2023/01/11/audio_e64c69e167.mp3"></audio>
+  <audio id="ambientBuzz" src="https://cdn.pixabay.com/audio/2022/03/16/audio_b1d4dd9e3d.mp3" autoplay loop></audio>
+
+  <script>
+    let honey = 0;
+    let bonus = 0;
+    const countDisplay = document.getElementById("honeyCount");
+    const bonusDisplay = document.getElementById("bonusDisplay");
+    const celebration = document.getElementById("celebration");
+    const buzzSound = document.getElementById("buzzSound");
+    const coinSound = document.getElementById("coinSound");
+    const clapSound = document.getElementById("clapSound");
+    const dripSound = document.getElementById("dripSound");
+    const honeyFill = document.getElementById("honeyFill");
+    const hive = document.getElementById("hive");
+    const toast = document.getElementById("rewardToast");
+
+    function updateHoneyFill() {
+      const percentage = Math.min((honey % 1000) / 1000 * 100, 100);
+      honeyFill.style.height = percentage + "%";
+
+      if (percentage >= 100) {
+        hive.classList.add("glow");
+      } else {
+        hive.classList.remove("glow");
+      }
+    }
+
+    function dropPollen() {
+      const pollen = document.createElement("div");
+      pollen.className = "pollen";
+      pollen.style.left = `${50 + Math.random() * 40 - 20}%`;
+      pollen.style.top = `${50 + Math.random() * 20 - 10}%`;
+      document.body.appendChild(pollen);
+      setTimeout(() => pollen.remove(), 1500);
+    }
+
+    function dripHoney() {
+      const drip = document.createElement("div");
+      drip.className = "honey-drip";
+      document.querySelector(".container").appendChild(drip);
+      dripSound.currentTime = 0;
+      dripSound.play();
+      setTimeout(() => drip.remove(), 1000);
+    }
+
+    function showToast() {
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3000);
+    }
+
+    function addHoney() {
+      honey++;
+      countDisplay.textContent = honey;
+      buzzSound.currentTime = 0;
+      buzzSound.play();
+      coinSound.currentTime = 0;
+      coinSound.play();
+      updateHoneyFill();
+      countDisplay.classList.add("bounce");
+      setTimeout(() => countDisplay.classList.remove("bounce"), 300);
+      dropPollen();
+      dripHoney();
+
+      if (honey % 20 === 0) {
+        bonus++;
+        bonusDisplay.textContent = `🐝 花粉值：${bonus}`;
+        clapSound.play();
+        showToast();
+      }
+    }
+
+    updateHoneyFill();
+  </script>
+</body>
+</html>
