@@ -1,309 +1,264 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>蜂巢互動慶祝頁面</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Instagram 模擬主畫面</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
     body {
-      margin: 0;
-      padding: 0;
-      font-family: "Segoe UI", "Noto Sans TC", sans-serif;
-      background: linear-gradient(to bottom, #fffce1, #fff176, #ffe600);
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      background-color: #fafafa;
+    }
+    .story-list {
+      overflow-x: auto;
+      white-space: nowrap;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .story-list::-webkit-scrollbar {
+      display: none;
+    }
+    .story-item {
+      display: inline-block;
+      width: 70px;
+      text-align: center;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+    .story-border {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      padding: 2px;
+      background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+      animation: rotate 4s linear infinite;
+    }
+    @keyframes rotate {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+    .story-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 2px solid white;
+    }
+    .story-name {
+      font-size: 12px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       overflow: hidden;
-      transition: opacity 1s ease;
     }
-
-    .fade-out {
-      opacity: 0;
+    .navbar-icon {
+      font-size: 20px;
+      padding: 0 10px;
     }
-
-    .container {
-      width: 300px;
-      height: 90vh;
-      background: #fffef0;
-      border-radius: 20px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    h1 {
-      font-size: 1.4rem;
-      color: #222;
-      margin-top: 0.5rem;
-    }
-
-    .emoji-bee {
-      position: absolute;
-      font-size: 1.8rem;
-      animation: beeFloat 6s ease-in-out infinite;
-      opacity: 0.9;
-    }
-
-    .emoji-bee:nth-child(1) { top: 10%; left: 10px; animation-delay: 0s; }
-    .emoji-bee:nth-child(2) { top: 20%; right: 10px; animation-delay: 1s; }
-    .emoji-bee:nth-child(3) { bottom: 20%; left: 15px; animation-delay: 2s; }
-    .emoji-bee:nth-child(4) { bottom: 10%; right: 15px; animation-delay: 3s; }
-
-    @keyframes beeFloat {
-      0% { transform: translate(0, 0); }
-      50% { transform: translateY(-15px); }
-      100% { transform: translate(0, 0); }
-    }
-
-    .hive-icon {
-      width: 120px;
-      height: 220px;
-      border-radius: 0 0 60px 60px;
-      background: linear-gradient(to top, #fbc02d, #fff176);
-      border: 5px solid #000;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 0 30px 12px rgba(255, 215, 0, 0.4);
-      transition: box-shadow 0.5s ease;
-    }
-
-    .hive-icon.glow {
-      animation: glowPulse 2s infinite;
-    }
-
-    @keyframes glowPulse {
-      0% { box-shadow: 0 0 30px 15px rgba(255, 223, 0, 0.6); }
-      50% { box-shadow: 0 0 40px 20px rgba(255, 223, 0, 0.9); }
-      100% { box-shadow: 0 0 30px 15px rgba(255, 223, 0, 0.6); }
-    }
-
-    .honey-fill {
-      position: absolute;
+    .bottom-nav {
+      position: fixed;
       bottom: 0;
       width: 100%;
-      background-color: #fdd835;
-      height: 20%;
-      transition: height 0.5s ease-in-out;
-    }
-
-    .honey-drip {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      width: 10px;
-      height: 10px;
-      background-color: #fbc02d;
-      border-radius: 50%;
-      animation: drip 1s ease-in-out forwards;
-      z-index: 5;
-    }
-
-    @keyframes drip {
-      0% { transform: translate(-50%, 0) scale(1); opacity: 1; }
-      50% { transform: translate(-50%, 50px) scale(1.2); opacity: 0.9; }
-      100% { transform: translate(-50%, 100px) scale(0.8); opacity: 0; }
-    }
-
-    .count-display {
-      font-size: 3rem;
-      font-weight: bold;
-      color: #000;
-      margin: 1rem 0 0.5rem;
-      z-index: 5;
-      transition: transform 0.2s ease;
-    }
-
-    .count-display.bounce {
-      transform: scale(1.3);
-    }
-
-    .pollen {
-      position: absolute;
-      width: 10px;
-      height: 10px;
       background: white;
+      border-top: 1px solid #ddd;
+      padding: 6px 0;
+    }
+    .post-card {
+      border: none;
+      border-radius: 0;
+      margin-bottom: 16px;
+    }
+    .post-header {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+    }
+    .post-header img {
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
-      opacity: 0.8;
-      animation: rise 1.5s ease-out forwards;
-      z-index: 2;
+      margin-right: 10px;
     }
-
-    @keyframes rise {
-      0% { transform: translateY(0); opacity: 0.8; }
-      100% { transform: translateY(-100px); opacity: 0; }
-    }
-
-    .reward-area {
-      position: relative;
-      width: 100%;
-      height: 100px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .celebration {
+    .notif-badge {
+      font-size: 10px;
+      background: red;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 5px;
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: #d32f2f;
-      background: #fff;
-      padding: 1rem;
-      border-radius: 12px;
-      display: none;
-      z-index: 10;
+      top: -4px;
+      right: -4px;
     }
-
-    .bonus-display {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 1rem;
-      background: rgba(255, 255, 255, 0.6);
-      padding: 0.4rem 1rem;
-      border-radius: 20px;
-      box-shadow: 0 0 8px rgba(255, 215, 0, 0.8);
+    .progress-bar-story {
+      height: 4px;
+      background-color: #fff;
+      animation: progressStory 5s linear forwards;
     }
-
-    .reward-toast {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #ffec3d;
-      padding: 1rem 1.5rem;
-      border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    @keyframes progressStory {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+    .story-header {
       display: flex;
       align-items: center;
-      font-weight: bold;
-      color: #222;
-      font-size: 1rem;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.5s ease;
-      z-index: 100;
+      gap: 10px;
+      padding: 10px;
     }
-
-    .reward-toast img {
-      height: 48px;
-      margin-left: 1rem;
+    .story-header img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
     }
-
-    .reward-toast.show {
-      opacity: 1;
-      pointer-events: all;
+    .story-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .story-actions input {
+      background-color: rgba(255,255,255,0.1);
+      border: none;
+      color: white;
     }
   </style>
 </head>
 <body>
-  <div class="emoji-bee">🐝</div>
-  <div class="emoji-bee">✨</div>
-  <div class="emoji-bee">🐝</div>
-  <div class="emoji-bee">✨</div>
 
-  <div class="container" onclick="addHoney()">
-    <h1>HIVE A NICE DAY</h1>
-    <div class="count-display" id="honeyCount">0</div>
-    <div class="hive-icon" id="hive">
-      <div class="honey-fill" id="honeyFill"></div>
+  <!-- 上方導航欄 -->
+  <div class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom bg-white">
+    <div class="d-flex align-items-center">
+      <h5 class="mb-0">Instagram</h5>
+      <i class="fa-solid fa-chevron-down ms-2"></i>
     </div>
-    <div class="reward-area">
-      <div class="celebration" id="celebration">🎉 完成新蜂巢！</div>
+    <div class="input-group w-50">
+      <input type="text" class="form-control form-control-sm" placeholder="搜尋">
+    </div>
+    <i class="fa-regular fa-heart position-relative">
+      <span class="notif-badge">1</span>
+    </i>
+  </div>
+
+  <!-- 限時動態列 -->
+  <div class="bg-white py-2 px-3">
+    <div class="story-list">
+      <script>
+        const storyUsers = ["限時動態", "ration_418", "torchik37", "lou__is.30", "lucas_glcr", "查看更多", "catlover", "dogwalker", "design_guy", "travelgal", "foodie" ];
+        document.write(
+          storyUsers.map((name, i) => `
+            <div class='story-item' onclick='showStory(${i + 1}, "${name}")'>
+              <div class='story-border mx-auto'>
+                <img src='https://picsum.photos/60?random=${i + 1}' class='story-img' />
+              </div>
+              <div class='story-name mt-1'>${name}</div>
+            </div>
+          `).join('')
+        );
+      </script>
     </div>
   </div>
 
-  <div class="bonus-display" id="bonusDisplay">🐝 花粉值：0</div>
-  <div class="reward-toast" id="rewardToast">
-    簽到成功！你獲得 +200 花粉值
-    <img src="https://cdn-icons-png.flaticon.com/512/3089/3089805.png" alt="bee" />
+  <!-- 貼文 -->
+  <div class="container mt-3 pb-5">
+    <div class="card post-card">
+      <div class="post-header">
+        <img src="https://picsum.photos/32?random=7" alt="頭像">
+        <div>
+          <div class="fw-bold">ntnuartsfestival</div>
+          <div class="text-muted small">7小時前</div>
+        </div>
+      </div>
+      <img src="https://picsum.photos/600/400?random=99" class="img-fluid">
+      <div class="p-2">
+        <div class="mb-2">
+          <i class="fa-regular fa-heart me-3"></i>
+          <i class="fa-regular fa-comment me-3"></i>
+          <i class="fa-regular fa-bookmark"></i>
+        </div>
+        <div class="fw-bold small">5,123 個讚</div>
+        <div class="small"><span class="fw-bold">ntnuartsfestival</span> 定價完成，敬請期待！</div>
+        <div class="mt-2">
+          <input type="text" class="form-control form-control-sm" placeholder="新增留言……">
+        </div>
+      </div>
+    </div>
   </div>
 
-  <audio id="buzzSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_47e7f56482.mp3"></audio>
-  <audio id="coinSound" src="https://cdn.pixabay.com/audio/2022/03/24/audio_3d479e3c0a.mp3"></audio>
-  <audio id="clapSound" src="https://cdn.pixabay.com/audio/2021/08/04/audio_6d0e3cb5e2.mp3"></audio>
-  <audio id="dripSound" src="https://cdn.pixabay.com/audio/2023/01/11/audio_e64c69e167.mp3"></audio>
-  <audio id="ambientBuzz" src="https://cdn.pixabay.com/audio/2022/03/16/audio_b1d4dd9e3d.mp3" autoplay loop></audio>
+  <!-- 限時動態 Modal（自訂） -->
+  <div class="modal fade" id="storyModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark text-white">
+        <div class="progress">
+          <div class="progress-bar-story" role="progressbar"></div>
+        </div>
+        <div class="story-header">
+          <img id="storyUserAvatar" src="" alt="avatar">
+          <strong id="storyUserName">使用者名稱</strong>
+        </div>
+        <img id="storyImage" src="" class="img-fluid" alt="story image">
+        <div class="story-actions">
+          <input type="text" class="form-control form-control-sm" placeholder="傳送訊息…">
+          <i class="fa-regular fa-heart ms-3"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部導航列 -->
+  <div class="bottom-nav d-flex justify-content-around">
+    <i class="fa-solid fa-house navbar-icon"></i>
+    <i class="fa-regular fa-compass navbar-icon"></i>
+    <i class="fa-solid fa-clapperboard navbar-icon"></i>
+    <i class="fa-regular fa-square-plus navbar-icon"></i>
+    <div class="position-relative">
+      <i class="fa-regular fa-heart navbar-icon"></i>
+      <span class="notif-badge">8</span>
+    </div>
+    <img src="https://picsum.photos/30?random=8" class="rounded-circle" style="width: 24px; height: 24px;">
+  </div>
 
   <script>
-    let honey = 0;
-    let bonus = 0;
-    const countDisplay = document.getElementById("honeyCount");
-    const bonusDisplay = document.getElementById("bonusDisplay");
-    const celebration = document.getElementById("celebration");
-    const buzzSound = document.getElementById("buzzSound");
-    const coinSound = document.getElementById("coinSound");
-    const clapSound = document.getElementById("clapSound");
-    const dripSound = document.getElementById("dripSound");
-    const honeyFill = document.getElementById("honeyFill");
-    const hive = document.getElementById("hive");
-    const toast = document.getElementById("rewardToast");
+    const storyImages = [
+      'https://picsum.photos/400/700?random=101',
+      'https://picsum.photos/400/700?random=102',
+      'https://picsum.photos/400/700?random=103'
+    ];
 
-    function updateHoneyFill() {
-      const percentage = Math.min((honey % 1000) / 1000 * 100, 100);
-      honeyFill.style.height = percentage + "%";
+    let currentStoryIndex = 0;
+    let storyTimer;
 
-      if (percentage >= 100) {
-        hive.classList.add("glow");
-      } else {
-        hive.classList.remove("glow");
-      }
+    function showStory(index, name) {
+      currentStoryIndex = 0;
+      document.getElementById('storyUserName').innerText = name;
+      document.getElementById('storyUserAvatar').src = `https://picsum.photos/60?random=${index}`;
+      document.getElementById('storyImage').src = storyImages[currentStoryIndex];
+      clearInterval(storyTimer);
+      startStoryCycle(index);
+      const modal = new bootstrap.Modal(document.getElementById('storyModal'));
+      modal.show();
     }
 
-    function dropPollen() {
-      const pollen = document.createElement("div");
-      pollen.className = "pollen";
-      pollen.style.left = `${50 + Math.random() * 40 - 20}%`;
-      pollen.style.top = `${50 + Math.random() * 20 - 10}%`;
-      document.body.appendChild(pollen);
-      setTimeout(() => pollen.remove(), 1500);
+    function startStoryCycle(index) {
+      const bar = document.querySelector('.progress-bar-story');
+      bar.style.animation = 'none';
+      void bar.offsetWidth;
+      bar.style.animation = null;
+
+      storyTimer = setInterval(() => {
+        currentStoryIndex++;
+        if (currentStoryIndex >= storyImages.length) {
+          clearInterval(storyTimer);
+          bootstrap.Modal.getInstance(document.getElementById('storyModal')).hide();
+        } else {
+          document.getElementById('storyImage').src = storyImages[currentStoryIndex];
+          bar.style.animation = 'none';
+          void bar.offsetWidth;
+          bar.style.animation = null;
+        }
+      }, 5000);
     }
-
-    function dripHoney() {
-      const drip = document.createElement("div");
-      drip.className = "honey-drip";
-      document.querySelector(".container").appendChild(drip);
-      dripSound.currentTime = 0;
-      dripSound.play();
-      setTimeout(() => drip.remove(), 1000);
-    }
-
-    function showToast() {
-      toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), 3000);
-    }
-
-    function addHoney() {
-      honey++;
-      countDisplay.textContent = honey;
-      buzzSound.currentTime = 0;
-      buzzSound.play();
-      coinSound.currentTime = 0;
-      coinSound.play();
-      updateHoneyFill();
-      countDisplay.classList.add("bounce");
-      setTimeout(() => countDisplay.classList.remove("bounce"), 300);
-      dropPollen();
-      dripHoney();
-
-      if (honey % 20 === 0) {
-        bonus++;
-        bonusDisplay.textContent = `🐝 花粉值：${bonus}`;
-        clapSound.play();
-        showToast();
-      }
-    }
-
-    updateHoneyFill();
   </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
